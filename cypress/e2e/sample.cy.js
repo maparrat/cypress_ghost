@@ -18,7 +18,192 @@ Cypress.Commands.add('login', () => {
   // Asegúrate de esperar a que la autenticación se complete antes de continuar
   cy.wait(2000);
 });
+describe('Modificar el campo facebook en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newFB = 'MiguelParra';
+    cy.get('#user-facebook').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newFB);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+  });
+});
+
+
+describe('Modificar el campo Facebook en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newFB = faker.person.firstName();
+    cy.get('#user-facebook').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newFB);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+  });
+});
+
+describe('Modificar el campo FACEBOOK en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newFB = faker.word.adjective();
+    cy.get('#user-facebook').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newFB);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+  });
+});
+describe('Modificar el campo user-location en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newLocation = 'Bogota';
+    cy.get('#user-location').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newLocation);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
+  });
+});
+
+
+describe('Modificar el campo user-location en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newLocation = faker.location.city();
+    cy.get('#user-location').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newLocation);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
+  });
+});
+
+describe('Modificar el campo user-location en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newLocation = faker.word.words();
+    cy.get('#user-location').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newLocation);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
+  });
+});
 
 describe('Modificar el campo user-name en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
