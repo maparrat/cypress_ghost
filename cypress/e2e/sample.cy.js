@@ -18,13 +18,110 @@ Cypress.Commands.add('login', () => {
   // Asegúrate de esperar a que la autenticación se complete antes de continuar
   cy.wait(2000);
 });
+
+describe('Modificar el campo twiter en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo twiter y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newt = 'MiguelParra';
+    cy.get('#user-twitter').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newt);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newt);
+  });
+});
+
+
+describe('Modificar el campo Twiter en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo twiter y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newT = faker.person.firstName();
+    cy.get('#user-twitter').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newT);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newT);
+  });
+});
+
+describe('Modificar el campo Twiter en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo fb y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newT = faker.word.adjective();
+    cy.get('#user-twitter').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newT);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newT);
+  });
+});
+
+
+
 describe('Modificar el campo facebook en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
     // Llamar al comando de autenticación antes de cada prueba
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo fb y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
@@ -56,7 +153,7 @@ describe('Modificar el campo Facebook en la página de configuración de persona
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo fb y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
@@ -87,7 +184,7 @@ describe('Modificar el campo FACEBOOK en la página de configuración de persona
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo fb y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
@@ -117,7 +214,7 @@ describe('Modificar el campo user-location en la página de configuración de pe
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo location y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
@@ -149,7 +246,7 @@ describe('Modificar el campo user-location en la página de configuración de pe
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo location y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
@@ -180,7 +277,7 @@ describe('Modificar el campo user-location en la página de configuración de pe
     cy.login();
   });
   
-  it('Modifica el campo user-name y verifica el cambio', () => {
+  it('Modifica el campo location y verifica el cambio', () => {
     // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
