@@ -19,6 +19,104 @@ Cypress.Commands.add('login', () => {
   cy.wait(2000);
 });
 
+
+
+describe('Modificar el campo bio en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo bio y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newBio = 'Escritor reconocido en el campo de las pruebas automaticas, esta triste porque los tutores no reconocen su trabajo como tester.';
+    cy.get('#user-bio').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newBio);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-bio').scrollIntoView().should('have.value',  newBio);
+  });
+});
+
+
+describe('Modificar el campo bio en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo bio y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newBio = faker.lorem.paragraph();
+    cy.get('#user-bio').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newBio);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-bio').scrollIntoView().should('have.value', newBio);
+  });
+});
+
+describe('Modificar el campo Bio en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo  bio y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newBio = faker.word.words();
+    cy.get('#user-bio').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newBio);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-bio').scrollIntoView().should('have.value', newBio);
+  });
+});
+
+
+
 describe('Modificar el campo twiter en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
     // Llamar al comando de autenticación antes de cada prueba
