@@ -19,6 +19,101 @@ Cypress.Commands.add('login', () => {
   cy.wait(2000);
 });
 
+
+describe('Modificar el campo user-name en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo user-name y modificar su valor
+    const newUserName = 'nuevoNombreDeUsuario';
+    cy.get('#user-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newUserName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-name').should('have.value', newUserName);
+  });
+});
+
+
+describe('Modificar el campo user-name en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo user-name y modificar su valor
+    const newUserName = faker.person.firstName();
+    cy.get('#user-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newUserName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-name').should('have.value', newUserName);
+  });
+});
+
+describe('Modificar el campo user-name en la página de configuración de personal [Dato aleatorio]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo user-name y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo user-name y modificar su valor
+    const newUserName = faker.word.words();
+    cy.get('#user-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newUserName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-name').should('have.value', newUserName);
+  });
+});
+
 describe('Iniciar session [estrategia dato conocido]', () => {
 
   it('Accede a hacer sigin', () => {
