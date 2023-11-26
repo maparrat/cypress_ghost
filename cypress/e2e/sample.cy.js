@@ -1,1012 +1,887 @@
-
 import {faker} from '@faker-js/faker';
 
 Cypress.Commands.add('login', () => {
-  // Lógica para realizar la autenticación
-  cy.visit('/'); // Ajusta la ruta según la estructura de tu aplicación
 
-  // Ingresa el nombre de usuario y la contraseña
-  cy.get('#identification').type('miguel1999parra@gmail.com'); // Reemplaza 'tu_usuario' con el nombre de usuario deseado
-  cy.get('#password').type('zbyHRuEWC6j.m*_a'); // Reemplaza 'tu_contraseña' con la contraseña deseada
+  cy.visit('/'); 
 
-  // Hacer clic en el botón de inicio de sesión (ajusta el selector según la estructura de tu aplicación)
+  cy.get('#identification').type('miguel1999parra@gmail.com'); 
+  cy.get('#password').type('zbyHRuEWC6j.m*_a'); 
+
   cy.get('button[type="submit"]').click();
 
-  // Verificar que la sesión se haya iniciado correctamente (puedes ajustar esto según tu aplicación)
-  cy.url().should('include', '/dashboard'); // Reemplaza '/dashboard' con la ruta a la que se redirige después de iniciar sesión
+  cy.url().should('include', '/dashboard'); 
 
-  // Asegúrate de esperar a que la autenticación se complete antes de continuar
   cy.wait(2000);
 });
 
-
+// GIVEN: User is logged in
 describe('Crear nueva etiqueta dato conocido', () => {
-
-
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
 
+  // THEN: User creates a new tag with a known name "test"
   it('Crea una nueva etiqueta con el nombre "test"', () => {
-    // Visitar la página para crear una nueva etiqueta
     cy.visit('http://localhost:2368/ghost/#/tags/new');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo tag-name y escribir el valor "test"
+    // WHEN: User types the known tag name "test"
     const tagName = 'test';
     cy.get('#tag-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .should('be.visible')
       .type(tagName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que la etiqueta se haya creado correctamente
-    
+    // THEN: The new tag with the known name "test" should be created
   });
 });
 
-
-
+// GIVEN: User is logged in
 describe('Crear nueva etiqueta dato aleatorio pero valido', () => {
-
-
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Crea una nueva etiqueta con el nombre "test"', () => {
-    // Visitar la página para crear una nueva etiqueta
+
+  // THEN: User creates a new tag with a valid random name
+  it('Crea una nueva etiqueta con un nombre aleatorio pero valido', () => {
     cy.visit('http://localhost:2368/ghost/#/tags/new');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo tag-name y escribir el valor "test"
+    // WHEN: User generates a valid random tag name using faker
     const tagName = faker.animal.cat();
     cy.get('#tag-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .should('be.visible')
       .type(tagName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que la etiqueta se haya creado correctamente
-    
+    // THEN: The new tag with the valid random name should be created
   });
 });
 
-describe('Crear nueva etiqueta dato aleatorio ', () => {
-
-
+// GIVEN: User is logged in
+describe('Crear nueva etiqueta dato aleatorio', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Crea una nueva etiqueta con el nombre "test"', () => {
-    // Visitar la página para crear una nueva etiqueta
+
+  // THEN: User attempts to create a new tag with a random name
+  it('Intenta crear una nueva etiqueta con un nombre aleatorio', () => {
     cy.visit('http://localhost:2368/ghost/#/tags/new');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo tag-name y escribir el valor "test"
+    // WHEN: User generates a random tag name using faker
     const tagName = faker.word.words();
     cy.get('#tag-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .should('be.visible')
       .type(tagName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que la etiqueta se haya creado correctamente
-    
+    // THEN: The system may or may not accept the tag creation depending on randomness
   });
 });
 
+// GIVEN: User is logged in
 describe('Modificar el campo contraseña en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo contraseña y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the password field with a known value
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides the known old password
     const oldPassword = 'zbyHRuEWC6j.m*_a';
     cy.get('#user-password-old').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(oldPassword);
 
+    cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(oldPassword);
 
+    cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(oldPassword);
 
-      cy.get('#user-password-new').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(oldPassword);      
-
-      cy.get('#user-new-password-verification').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(oldPassword);   
-
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Change Password" button
     cy.contains('Change Password').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-
-   
+    // THEN: The password should be successfully changed
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo contraseña en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo contraseña y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User attempts to modify the password field with valid random data
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random passwords using faker
     const oldPassword = faker.internet.password();
     const newPassword = faker.internet.password();
     const verifyPassword = faker.internet.password();
+
     cy.get('#user-password-old').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(oldPassword);
 
+    cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(newPassword);
 
+    cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(verifyPassword);
 
-      cy.get('#user-password-new').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(newPassword);      
-
-      cy.get('#user-new-password-verification').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(verifyPassword);   
-
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Change Password" button
     cy.contains('Change Password').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
+    // THEN: The system should display a message indicating that new passwords do not match
     cy.contains('Your new passwords do not match');
-
-
-   
   });
 });
 
-describe('Modificar el campo contraseña en la página de configuración de personal [Dato aleatorio valido]', () => {
+// GIVEN: User is logged in
+describe('Modificar el campo contraseña en la página de configuración de personal [Dato aleatorio valido - Palabras]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo contraseña y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User attempts to modify the password field with valid random words
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random words using faker
     const oldPassword = faker.word.words();
     const newPassword = faker.word.words();
     const verifyPassword = faker.word.words();
+
     cy.get('#user-password-old').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(oldPassword);
 
+    cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(newPassword);
 
+    cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(verifyPassword);
 
-      cy.get('#user-password-new').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(newPassword);      
-
-      cy.get('#user-new-password-verification').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(verifyPassword);   
-
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Change Password" button
     cy.contains('Change Password').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
+    // THEN: The system should display a message indicating that new passwords do not match
     cy.contains('Your new passwords do not match');
-
-
-   
   });
 });
 
-
-
+// GIVEN: User is logged in
 describe('Modificar el campo website en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo website y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the website field with a known value
+  it('Modifica el campo website y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides a known website
     const newWebsite = 'https://sistemas.uniandes.edu.co/es/isis';
     cy.get('#user-website').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newWebsite);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-website').scrollIntoView().should('have.value',  newWebsite);
-  });
-});
-
-
-describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio valido]', () => {
-  beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
-    cy.login();
-  });
-  
-  it('Modifica el campo website y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
-
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
-    const newWebsite= faker.internet.url();
-    cy.get('#user-website').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
-      .type(newWebsite);
-
-    // Hacer clic en el botón "Save"
-    cy.contains('Save').click();
-
-    // Esperar a que se procese la acción (ajusta según sea necesario)
-    cy.wait(5000);
-
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The website field should be successfully updated
     cy.get('#user-website').scrollIntoView().should('have.value', newWebsite);
   });
 });
 
-describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio ]', () => {
+// GIVEN: User is logged in
+describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo  website y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
-    const newWebsite = faker.word.words();
+  // THEN: User modifies the website field with valid random data
+  it('Modifica el campo website y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates a valid random website using faker
+    const newWebsite = faker.internet.url();
     cy.get('#user-website').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newWebsite);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The website field should be successfully updated
+    cy.get('#user-website').scrollIntoView().should('have.value', newWebsite);
+  });
+});
+
+
+// GIVEN: User is logged in
+describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // WHEN: User logs in before each test
+    cy.login();
+  });
+
+  // THEN: User attempts to modify the website field with valid random words
+  it('Modifica el campo website y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random words using faker
+    const newWebsite = faker.word.words();
+    cy.get('#user-website').scrollIntoView()
+      .should('be.visible')
+      .clear()
+      .type(newWebsite);
+
+    // WHEN: User clicks on the "Save" button
+    cy.contains('Save').click();
+
+    cy.wait(5000);
+
+    // THEN: The system should display a message indicating that the website is not a valid URL
     cy.contains('Website is not a valid url');
   });
 });
 
-
-
-
-
+// GIVEN: User is logged in
 describe('Modificar el campo bio en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo bio y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the bio field with a known value
+  it('Modifica el campo bio y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides a known bio
     const newBio = 'Escritor reconocido en el campo de las pruebas automaticas, esta triste porque los tutores no reconocen su trabajo como tester.';
     cy.get('#user-bio').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newBio);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-bio').scrollIntoView().should('have.value',  newBio);
+    // THEN: The bio field should be successfully updated
+    cy.get('#user-bio').scrollIntoView().should('have.value', newBio);
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo bio en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo bio y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the bio field with valid random data
+  it('Modifica el campo bio y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random bio using faker
     const newBio = faker.lorem.paragraph();
     cy.get('#user-bio').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newBio);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The bio field should be successfully updated
     cy.get('#user-bio').scrollIntoView().should('have.value', newBio);
   });
 });
 
+
+// GIVEN: User is logged in
 describe('Modificar el campo Bio en la página de configuración de personal [Dato aleatorio ]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo  bio y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the bio field with valid random words
+  it('Modifica el campo  bio y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random words using faker
     const newBio = faker.word.words();
     cy.get('#user-bio').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newBio);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The bio field should be successfully updated
     cy.get('#user-bio').scrollIntoView().should('have.value', newBio);
   });
 });
 
-
-
+// GIVEN: User is logged in
 describe('Modificar el campo twiter en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo twiter y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Twitter field with a known value
+  it('Modifica el campo twiter y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides a known Twitter handle
     const newt = 'MiguelParra';
     cy.get('#user-twitter').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newt);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newt);
+    // THEN: The Twitter field should be successfully updated with the full Twitter URL
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/' + newt);
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo Twiter en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo twiter y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Twitter field with valid random data
+  it('Modifica el campo twiter y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates a valid random Twitter handle using faker
     const newT = faker.person.firstName();
     cy.get('#user-twitter').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newT);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newT);
+    // THEN: The Twitter field should be successfully updated with the full Twitter URL
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/' + newT);
   });
 });
 
+// GIVEN: User is logged in
 describe('Modificar el campo Twiter en la página de configuración de personal [Dato aleatorio ]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo fb y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Twitter field with valid random words
+  it('Modifica el campo fb y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random words using faker
     const newT = faker.word.adjective();
     cy.get('#user-twitter').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newT);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/'+ newT);
+    // THEN: The Twitter field should be successfully updated with the full Twitter URL
+    cy.get('#user-twitter').scrollIntoView().should('have.value', 'https://twitter.com/' + newT);
   });
 });
 
-
-
+// GIVEN: User is logged in
 describe('Modificar el campo facebook en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo fb y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Facebook field with a known value
+  it('Modifica el campo fb y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides a known Facebook handle
     const newFB = 'MiguelParra';
     cy.get('#user-facebook').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newFB);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+    // THEN: The Facebook field should be successfully updated with the full Facebook URL
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/' + newFB);
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo Facebook en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo fb y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Facebook field with valid random data
+  it('Modifica el campo fb y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates a valid random Facebook handle using faker
     const newFB = faker.person.firstName();
     cy.get('#user-facebook').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newFB);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+    // THEN: The Facebook field should be successfully updated with the full Facebook URL
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/' + newFB);
   });
 });
 
+// GIVEN: User is logged in
 describe('Modificar el campo FACEBOOK en la página de configuración de personal [Dato aleatorio ]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo fb y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the Facebook field with valid random words
+  it('Modifica el campo fb y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates valid random words using faker
     const newFB = faker.word.adjective();
     cy.get('#user-facebook').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newFB);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
-    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/'+ newFB);
+    // THEN: The Facebook field should be successfully updated with the full Facebook URL
+    cy.get('#user-facebook').scrollIntoView().should('have.value', 'https://www.facebook.com/' + newFB);
   });
 });
+
+// GIVEN: User is logged in
 describe('Modificar el campo user-location en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo location y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the location field with a known value
+  it('Modifica el campo location y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User provides a known location
     const newLocation = 'Bogota';
     cy.get('#user-location').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newLocation);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The location field should be successfully updated
     cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo user-location en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo location y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the location field with valid random data
+  it('Modifica el campo location y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates a valid random location using faker
     const newLocation = faker.location.city();
     cy.get('#user-location').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newLocation);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The location field should be successfully updated
     cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
   });
 });
 
+
+// GIVEN: User is logged in
 describe('Modificar el campo user-location en la página de configuración de personal [Dato aleatorio ]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
-  it('Modifica el campo location y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
-    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Encontrar el campo user-name y modificar su valor
+  // THEN: User modifies the location field with random words
+  it('Modifica el campo location y verifica el cambio', () => {
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
+
+    // WHEN: User generates random words for location using faker
     const newLocation = faker.word.words();
     cy.get('#user-location').scrollIntoView()
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newLocation);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The location field should be successfully updated
     cy.get('#user-location').scrollIntoView().should('have.value', newLocation);
   });
 });
 
+// GIVEN: User is logged in
 describe('Modificar el campo user-name en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
+
+  // THEN: User modifies the user-name field with a known value
   it('Modifica el campo user-name y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo user-name y modificar su valor
+    // WHEN: User provides a known user-name
     const newUserName = 'nuevoNombreDeUsuario';
     cy.get('#user-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newUserName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The user-name field should be successfully updated
     cy.get('#user-name').should('have.value', newUserName);
   });
 });
 
-
+// GIVEN: User is logged in
 describe('Modificar el campo user-name en la página de configuración de personal [Dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
+
+  // THEN: User modifies the user-name field with valid random data
   it('Modifica el campo user-name y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo user-name y modificar su valor
+    // WHEN: User generates a valid random user-name using faker
     const newUserName = faker.person.firstName();
     cy.get('#user-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newUserName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The user-name field should be successfully updated
     cy.get('#user-name').should('have.value', newUserName);
   });
 });
 
+// GIVEN: User is logged in
 describe('Modificar el campo user-name en la página de configuración de personal [Dato aleatorio]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
-  
+
+  // THEN: User modifies the user-name field with valid random words
   it('Modifica el campo user-name y verifica el cambio', () => {
-    // Visitar la página de configuración de personal para el usuario 'miguel'
     cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Encontrar el campo user-name y modificar su valor
+    // WHEN: User generates valid random words for user-name using faker
     const newUserName = faker.word.words();
     cy.get('#user-name')
-      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
-      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .should('be.visible')
+      .clear()
       .type(newUserName);
 
-    // Hacer clic en el botón "Save"
+    // WHEN: User clicks on the "Save" button
     cy.contains('Save').click();
 
-    // Esperar a que se procese la acción (ajusta según sea necesario)
     cy.wait(5000);
 
-    // Verificar que el nuevo valor se haya guardado correctamente
+    // THEN: The user-name field should be successfully updated
     cy.get('#user-name').should('have.value', newUserName);
   });
 });
 
+
+// GIVEN: User is on the login page
 describe('Iniciar session [estrategia dato conocido]', () => {
-
+  // THEN: User successfully signs in with known credentials
   it('Accede a hacer sigin', () => {
- // Lógica para realizar la autenticación
- cy.visit('/'); // Ajusta la ruta según la estructura de tu aplicación
+    cy.visit('/');
 
- // Ingresa el nombre de usuario y la contraseña
- cy.get('#identification').type('miguel1999parra@gmail.com'); // Reemplaza 'tu_usuario' con el nombre de usuario deseado
- cy.get('#password').type('zbyHRuEWC6j.m*_a'); // Reemplaza 'tu_contraseña' con la contraseña deseada
+    // WHEN: User provides known email and password
+    cy.get('#identification').type('miguel1999parra@gmail.com');
+    cy.get('#password').type('zbyHRuEWC6j.m*_a');
 
- // Hacer clic en el botón de inicio de sesión (ajusta el selector según la estructura de tu aplicación)
- cy.get('button[type="submit"]').click();
+    // WHEN: User clicks on the "Sign In" button
+    cy.get('button[type="submit"]').click();
 
- // Verificar que la sesión se haya iniciado correctamente (puedes ajustar esto según tu aplicación)
- cy.url().should('include', '/dashboard'); // Reemplaza '/dashboard' con la ruta a la que se redirige después de iniciar sesión
+    // THEN: User is redirected to the dashboard
+    cy.url().should('include', '/dashboard');
 
- // Asegúrate de esperar a que la autenticación se complete antes de continuar
- cy.wait(2000);
-
-   
+    cy.wait(2000);
   });
 });
+
+// GIVEN: User is on the login page
 describe('Iniciar session [estrategia dato aleatorio ]', () => {
-
+  // THEN: User attempts to sign in with invalid random data
   it('Accede a hacer sigin', () => {
- // Lógica para realizar la autenticación
- cy.visit('/'); // Ajusta la ruta según la estructura de tu aplicación
+    cy.visit('/');
 
- // Ingresa el nombre de usuario y la contraseña
- const email = faker.word.words();
- const password = faker.word.words();
- cy.get('#identification').type(email); // Reemplaza 'tu_usuario' con el nombre de usuario deseado
- cy.get('#password').type(password); // Reemplaza 'tu_contraseña' con la contraseña deseada
+    // WHEN: User generates random email and password using faker
+    const email = faker.word.words();
+    const password = faker.word.words();
+    cy.get('#identification').type(email);
+    cy.get('#password').type(password);
 
- // Hacer clic en el botón de inicio de sesión (ajusta el selector según la estructura de tu aplicación)
- cy.get('button[type="submit"]').click();
+    // WHEN: User clicks on the "Sign In" button
+    cy.get('button[type="submit"]').click();
 
- // Verificar que la sesión se haya iniciado correctamente (puedes ajustar esto según tu aplicación)
- cy.contains('Please fill out the form to sign in.'); // Reemplaza '/dashboard' con la ruta a la que se redirige después de iniciar sesión
+    // THEN: User should see an error message
+    cy.contains('Please fill out the form to sign in.');
 
- // Asegúrate de esperar a que la autenticación se complete antes de continuar
- cy.wait(2000);
-
-   
+    cy.wait(2000);
   });
 });
 
+// GIVEN: User is on the login page
 describe('Iniciar session [estrategia dato aleatorio valido]', () => {
-
+  // THEN: User attempts to sign in with valid random email and known password
   it('Accede a hacer sigin', () => {
- // Lógica para realizar la autenticación
- cy.visit('/'); // Ajusta la ruta según la estructura de tu aplicación
+    cy.visit('/');
 
- // Ingresa el nombre de usuario y la contraseña
- const email = faker.internet.email()
- cy.get('#identification').type(email); // Reemplaza 'tu_usuario' con el nombre de usuario deseado
- cy.get('#password').type('zbyHRuEWC6j.m*_a'); // Reemplaza 'tu_contraseña' con la contraseña deseada
+    // WHEN: User generates a valid random email using faker
+    const email = faker.internet.email();
+    cy.get('#identification').type(email);
+    cy.get('#password').type('zbyHRuEWC6j.m*_a');
 
- // Hacer clic en el botón de inicio de sesión (ajusta el selector según la estructura de tu aplicación)
- cy.get('button[type="submit"]').click();
+    // WHEN: User clicks on the "Sign In" button
+    cy.get('button[type="submit"]').click();
 
- // Verificar que la sesión se haya iniciado correctamente (puedes ajustar esto según tu aplicación)
- cy.contains('There is no user with that email address.'); // Reemplaza '/dashboard' con la ruta a la que se redirige después de iniciar sesión
+    // THEN: User should see an error message indicating no user with that email
+    cy.contains('There is no user with that email address.');
 
- // Asegúrate de esperar a que la autenticación se complete antes de continuar
- cy.wait(2000);
-
-   
+    cy.wait(2000);
   });
 });
 
-
-
-
-
+// GIVEN: User is logged in
 describe('Invitar a un nuevo miembro del personal nuevo [estrategia dato conocido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
 
+  // THEN: User navigates to staff settings and sends an invitation with known email
   it('Accede a la página de configuración de personal y envía una invitación', () => {
-    // Visitar la página de configuración de personal
     cy.visit('http://localhost:2368/ghost/#/settings/staff');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Hacer clic en el botón "Invite"
+    // WHEN: User clicks on "Invite" and provides a known email
     cy.contains('Invite').click();
-
-    // Esperar a que se cargue la ventana de invitación
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Ingresar el correo electrónico en el campo de invitación
-    const email = faker.internet.email()
+    cy.wait(2000);
     cy.get('input[name="email"]').type('miguel.parra@bizagi.com');
 
-    // Hacer clic en el botón "Send invitation now"
+    // WHEN: User clicks on "Send invitation now"
     cy.contains('Send invitation now').click();
 
-    // Esperar a que se procese la invitación (ajusta según sea necesario)
     cy.wait(5000);
-
-
-   
   });
 });
 
-
-
-
+// GIVEN: User is logged in
 describe('Invitar a un nuevo miembro del personal nuevo [estrategia dato aleatorio valido]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
- 
+
+  // THEN: User navigates to staff settings and sends an invitation with a valid random email
   it('Accede a la página de configuración de personal y envía una invitación', () => {
-    // Visitar la página de configuración de personal
     cy.visit('http://localhost:2368/ghost/#/settings/staff');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Hacer clic en el botón "Invite"
+    // WHEN: User clicks on "Invite" and provides a valid random email using faker
     cy.contains('Invite').click();
-
-    // Esperar a que se cargue la ventana de invitación
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Generar un correo electrónico aleatorio y válido
-    const email = faker.internet.email()
-
-    // Ingresar el correo electrónico en el campo de invitación
+    cy.wait(2000);
+    const email = faker.internet.email();
     cy.get('input[name="email"]').type(email);
 
-    // Hacer clic en el botón "Send invitation now"
+    // WHEN: User clicks on "Send invitation now"
     cy.contains('Send invitation now').click();
 
-    // Esperar a que se procese la invitación (ajusta según sea necesario)
     cy.wait(5000);
-
-
   });
 });
 
+// GIVEN: User is logged in
 describe('Invitar a un nuevo miembro del personal nuevo [estrategia dato aleatorio ]', () => {
   beforeEach(() => {
-    // Llamar al comando de autenticación antes de cada prueba
+    // WHEN: User logs in before each test
     cy.login();
   });
- 
+
+  // THEN: User navigates to staff settings and attempts to send an invitation with invalid random email
   it('Accede a la página de configuración de personal y envía una invitación', () => {
-    // Visitar la página de configuración de personal
+    // WHEN: User visits staff settings
     cy.visit('http://localhost:2368/ghost/#/settings/staff');
+    cy.wait(2000);
 
-    // Esperar a que la página se cargue completamente
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-
-    // Hacer clic en el botón "Invite"
+    // WHEN: User clicks on "Invite"
     cy.contains('Invite').click();
+    cy.wait(2000);
 
-    // Esperar a que se cargue la ventana de invitación
-    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
-    
-    // Generar un correo electrónico aleatorio 
+    // WHEN: User provides an invalid random email using faker
     const email = faker.word.words();
-
-    // Ingresar el correo electrónico en el campo de invitación
     cy.get('input[name="email"]').type(email);
 
-    // Hacer clic en el botón "Send invitation now"
+    // WHEN: User clicks on "Send invitation now"
     cy.contains('Send invitation now').click();
 
-    // Esperar a que se procese la invitación (ajusta según sea necesario)
     cy.wait(5000);
-    cy.contains('Invalid Email.').should('be.visible');
 
+    // THEN: User should see an error message indicating an invalid email
+    cy.contains('Invalid Email.').should('be.visible');
   });
 });
