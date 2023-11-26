@@ -18,6 +18,144 @@ Cypress.Commands.add('login', () => {
   // Asegúrate de esperar a que la autenticación se complete antes de continuar
   cy.wait(2000);
 });
+describe('Modificar el campo contraseña en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const oldPassword = 'zbyHRuEWC6j.m*_a';
+    cy.get('#user-password-old').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(oldPassword);
+
+
+
+      cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(oldPassword);      
+
+      cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(oldPassword);   
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Change Password').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+
+   
+  });
+});
+
+
+describe('Modificar el campo contraseña en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const oldPassword = faker.internet.password();
+    const newPassword = faker.internet.password();
+    const verifyPassword = faker.internet.password();
+    cy.get('#user-password-old').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(oldPassword);
+
+
+
+      cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newPassword);      
+
+      cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(verifyPassword);   
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Change Password').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    cy.contains('Your new passwords do not match');
+
+
+   
+  });
+});
+
+describe('Modificar el campo contraseña en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo contraseña y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const oldPassword = faker.word.words();
+    const newPassword = faker.word.words();
+    const verifyPassword = faker.word.words();
+    cy.get('#user-password-old').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(oldPassword);
+
+
+
+      cy.get('#user-password-new').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newPassword);      
+
+      cy.get('#user-new-password-verification').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(verifyPassword);   
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Change Password').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    cy.contains('Your new passwords do not match');
+
+
+   
+  });
+});
+
 
 
 describe('Modificar el campo website en la página de configuración de personal [Dato conocido]', () => {
