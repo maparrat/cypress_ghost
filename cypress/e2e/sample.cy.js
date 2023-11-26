@@ -18,6 +18,106 @@ Cypress.Commands.add('login', () => {
   // Asegúrate de esperar a que la autenticación se complete antes de continuar
   cy.wait(2000);
 });
+
+
+describe('Crear nueva etiqueta dato conocido', () => {
+
+
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+
+  it('Crea una nueva etiqueta con el nombre "test"', () => {
+    // Visitar la página para crear una nueva etiqueta
+    cy.visit('http://localhost:2368/ghost/#/tags/new');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo tag-name y escribir el valor "test"
+    const tagName = 'test';
+    cy.get('#tag-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .type(tagName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que la etiqueta se haya creado correctamente
+    
+  });
+});
+
+
+
+describe('Crear nueva etiqueta dato aleatorio pero valido', () => {
+
+
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Crea una nueva etiqueta con el nombre "test"', () => {
+    // Visitar la página para crear una nueva etiqueta
+    cy.visit('http://localhost:2368/ghost/#/tags/new');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo tag-name y escribir el valor "test"
+    const tagName = faker.animal.cat();
+    cy.get('#tag-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .type(tagName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que la etiqueta se haya creado correctamente
+    
+  });
+});
+
+describe('Crear nueva etiqueta dato aleatorio ', () => {
+
+
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Crea una nueva etiqueta con el nombre "test"', () => {
+    // Visitar la página para crear una nueva etiqueta
+    cy.visit('http://localhost:2368/ghost/#/tags/new');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+
+    // Encontrar el campo tag-name y escribir el valor "test"
+    const tagName = faker.word.words();
+    cy.get('#tag-name')
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .type(tagName);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que la etiqueta se haya creado correctamente
+    
+  });
+});
+
 describe('Modificar el campo contraseña en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
     // Llamar al comando de autenticación antes de cada prueba
