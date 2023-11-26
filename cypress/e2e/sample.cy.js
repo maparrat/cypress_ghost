@@ -20,6 +20,103 @@ Cypress.Commands.add('login', () => {
 });
 
 
+describe('Modificar el campo website en la página de configuración de personal [Dato conocido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo website y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newWebsite = 'https://sistemas.uniandes.edu.co/es/isis';
+    cy.get('#user-website').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newWebsite);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-website').scrollIntoView().should('have.value',  newWebsite);
+  });
+});
+
+
+describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio valido]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo website y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newWebsite= faker.internet.url();
+    cy.get('#user-website').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newWebsite);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.get('#user-website').scrollIntoView().should('have.value', newWebsite);
+  });
+});
+
+describe('Modificar el campo website en la página de configuración de personal [Dato aleatorio ]', () => {
+  beforeEach(() => {
+    // Llamar al comando de autenticación antes de cada prueba
+    cy.login();
+  });
+  
+  it('Modifica el campo  website y verifica el cambio', () => {
+    // Visitar la página de configuración de personal para el usuario 'miguel'
+    cy.visit('http://localhost:2368/ghost/#/settings/staff/miguel');
+
+    // Esperar a que la página se cargue completamente
+    cy.wait(2000); // Ajusta el tiempo de espera según sea necesario
+    
+    // Encontrar el campo user-name y modificar su valor
+    const newWebsite = faker.word.words();
+    cy.get('#user-website').scrollIntoView()
+      .should('be.visible')  // Opcional: Asegurarse de que el elemento sea visible
+      .clear()  // Limpiar el campo antes de ingresar el nuevo valor
+      .type(newWebsite);
+
+    // Hacer clic en el botón "Save"
+    cy.contains('Save').click();
+
+    // Esperar a que se procese la acción (ajusta según sea necesario)
+    cy.wait(5000);
+
+    // Verificar que el nuevo valor se haya guardado correctamente
+    cy.contains('Website is not a valid url');
+  });
+});
+
+
+
+
 
 describe('Modificar el campo bio en la página de configuración de personal [Dato conocido]', () => {
   beforeEach(() => {
